@@ -1,12 +1,12 @@
-class TurmaController {
-  constructor(Turma) {
-    this.Turma = Turma;
+class DisciplinaController {
+  constructor(Disciplina) {
+    this.Disciplina = Disciplina;
   }
 
   async get(req, res) {
     try {
-      const turmas = await this.Turma.find({}, '_id codigo sala vagas').populate('curso', 'name');
-      res.send(turmas);
+      const disciplinas = await this.Disciplina.find({}, '_id name ch').populate('curso', 'name');
+      res.send(disciplinas);
     } catch (err) {
       console.error(err);
       res.status(400).send('Error');
@@ -18,11 +18,11 @@ class TurmaController {
       params: { id }
     } = req;
     try {
-      const turma = await this.Turma.findById(id, '_id codigo sala vagas').populate(
+      const disciplina = await this.Disciplina.findById(id, '_id name ch').populate(
         'curso',
         'name'
       );
-      res.send(turma);
+      res.send(disciplina);
     } catch (err) {
       console.error(err);
       res.status(400).send('Error');
@@ -30,8 +30,8 @@ class TurmaController {
   }
 
   create(req, res) {
-    const turma = new this.Turma(req.body);
-    return turma
+    const disciplina = new this.Disciplina(req.body);
+    return disciplina
       .save()
       .then(() => res.status(201).send('Success'))
       .catch(err => {
@@ -41,16 +41,16 @@ class TurmaController {
   }
 
   update(req, res) {
-    return this.Turma.findOneAndUpdate({ _id: req.params.id }, req.body)
+    return this.Disciplina.findOneAndUpdate({ _id: req.params.id }, req.body)
       .then(() => res.sendStatus(200))
       .catch(err => res.status(422).send(err.message));
   }
 
   remove(req, res) {
-    return this.Turma.deleteOne({ _id: req.params.id })
+    return this.Disciplina.deleteOne({ _id: req.params.id })
       .then(() => res.sendStatus(204))
       .catch(err => res.status(400).send(err.message));
   }
 }
 
-export default TurmaController;
+export default DisciplinaController;
