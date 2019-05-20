@@ -7,6 +7,12 @@ const app = express();
 
 const configureExpress = () => {
   app.use(bodyParser.json());
+
+  app.use((req, res, next) => {
+    console.log(`${new Date().toString()} => ${req.originalUrl}`, req.body);
+    next();
+  });
+
   app.use('/', routes);
   return app;
 };

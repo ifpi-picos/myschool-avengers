@@ -1,12 +1,12 @@
-class UsersController {
-  constructor(User) {
-    this.User = User;
+class TurmaController {
+  constructor(Turma) {
+    this.Turma = Turma;
   }
 
   async get(req, res) {
     try {
-      const users = await this.User.find({}, '_id name email');
-      res.send(users);
+      const turmas = await this.Turma.find({}, '_id codigo sala vagas');
+      res.send(turmas);
     } catch (err) {
       console.error(err);
       res.status(400).send('Error');
@@ -18,8 +18,11 @@ class UsersController {
       params: { id }
     } = req;
     try {
-      const user = await this.User.findById(id, '_id name email');
-      res.send(user);
+      const turma = await this.Turma.findById(id, '_id codigo sala vagas').populate(
+        'curso',
+        'name'
+      );
+      res.send(turma);
     } catch (err) {
       console.error(err);
       res.status(400).send('Error');
@@ -27,8 +30,8 @@ class UsersController {
   }
 
   create(req, res) {
-    const user = new this.User(req.body);
-    return user
+    const turma = new this.Turma(req.body);
+    return turma
       .save()
       .then(() => res.status(201).send('Success'))
       .catch(err => {
@@ -38,16 +41,16 @@ class UsersController {
   }
 
   update(req, res) {
-    return this.User.findOneAndUpdate({ _id: req.params.id }, req.body)
+    return this.Turma.findOneAndUpdate({ _id: req.params.id }, req.body)
       .then(() => res.sendStatus(200))
       .catch(err => res.status(422).send(err.message));
   }
 
   remove(req, res) {
-    return this.User.deleteOne({ _id: req.params.id })
+    return this.Turma.deleteOne({ _id: req.params.id })
       .then(() => res.sendStatus(204))
       .catch(err => res.status(400).send(err.message));
   }
 }
 
-export default UsersController;
+export default TurmaController;

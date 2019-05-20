@@ -1,12 +1,12 @@
-class UsersController {
-  constructor(User) {
-    this.User = User;
+class CursoController {
+  constructor(Curso) {
+    this.Curso = Curso;
   }
 
   async get(req, res) {
     try {
-      const users = await this.User.find({}, '_id name email');
-      res.send(users);
+      const cursos = await this.Curso.find({}, '_id name');
+      res.send(cursos);
     } catch (err) {
       console.error(err);
       res.status(400).send('Error');
@@ -18,8 +18,8 @@ class UsersController {
       params: { id }
     } = req;
     try {
-      const user = await this.User.findById(id, '_id name email');
-      res.send(user);
+      const curso = await this.Curso.findById(id, '_id name');
+      res.send(curso);
     } catch (err) {
       console.error(err);
       res.status(400).send('Error');
@@ -27,8 +27,10 @@ class UsersController {
   }
 
   create(req, res) {
-    const user = new this.User(req.body);
-    return user
+    const curso = new this.Curso(req.body);
+    console.log(req.body);
+
+    return curso
       .save()
       .then(() => res.status(201).send('Success'))
       .catch(err => {
@@ -38,16 +40,16 @@ class UsersController {
   }
 
   update(req, res) {
-    return this.User.findOneAndUpdate({ _id: req.params.id }, req.body)
+    return this.Curso.findOneAndUpdate({ _id: req.params.id }, req.body)
       .then(() => res.sendStatus(200))
       .catch(err => res.status(422).send(err.message));
   }
 
   remove(req, res) {
-    return this.User.deleteOne({ _id: req.params.id })
+    return this.Curso.deleteOne({ _id: req.params.id })
       .then(() => res.sendStatus(204))
       .catch(err => res.status(400).send(err.message));
   }
 }
 
-export default UsersController;
+export default CursoController;
