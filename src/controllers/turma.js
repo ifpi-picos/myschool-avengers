@@ -29,27 +29,32 @@ class TurmaController {
     }
   }
 
-  create(req, res) {
+  async create(req, res) {
     const turma = new this.Turma(req.body);
-    return turma
-      .save()
-      .then(() => res.status(201).send('Success'))
-      .catch(err => {
-        console.error(err);
-        res.status(422).send(err.message);
-      });
+    try {
+      await turma.save();
+      res.status(201).send('Success');
+    } catch (err) {
+      res.status(422).send(err.message);
+    }
   }
 
-  update(req, res) {
-    return this.Turma.findOneAndUpdate({ _id: req.params.id }, req.body)
-      .then(() => res.sendStatus(200))
-      .catch(err => res.status(422).send(err.message));
+  async update(req, res) {
+    try {
+      await this.Turma.findOneAndUpdate({ _id: req.params.id }, req.body);
+      res.sendStatus(200);
+    } catch (err) {
+      res.status(422).send(err.message);
+    }
   }
 
-  remove(req, res) {
-    return this.Turma.deleteOne({ _id: req.params.id })
-      .then(() => res.sendStatus(204))
-      .catch(err => res.status(400).send(err.message));
+  async remove(req, res) {
+    try {
+      await this.Turma.deleteOne({ _id: req.params.id });
+      res.sendStatus(204);
+    } catch (err) {
+      res.status(400).send(err.message);
+    }
   }
 }
 

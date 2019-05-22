@@ -26,29 +26,33 @@ class CursoController {
     }
   }
 
-  create(req, res) {
+  async create(req, res) {
     const curso = new this.Curso(req.body);
-    console.log(req.body);
 
-    return curso
-      .save()
-      .then(() => res.status(201).send('Success'))
-      .catch(err => {
-        console.error(err);
-        res.status(422).send(err.message);
-      });
+    try {
+      await curso.save();
+      res.status(201).send('Success');
+    } catch (error) {
+      res.status(422).send(err.message);
+    }
   }
 
-  update(req, res) {
-    return this.Curso.findOneAndUpdate({ _id: req.params.id }, req.body)
-      .then(() => res.sendStatus(200))
-      .catch(err => res.status(422).send(err.message));
+  async update(req, res) {
+    try {
+      await this.Curso.findOneAndUpdate({ _id: req.params.id }, req.body);
+      res.sendStatus(200);
+    } catch (err) {
+      res.status(422).send(err.message);
+    }
   }
 
-  remove(req, res) {
-    return this.Curso.deleteOne({ _id: req.params.id })
-      .then(() => res.sendStatus(204))
-      .catch(err => res.status(400).send(err.message));
+  async remove(req, res) {
+    try {
+      await this.Curso.deleteOne({ _id: req.params.id });
+      res.sendStatus(204);
+    } catch (error) {
+      res.status(400).send(err.message);
+    }
   }
 }
 
