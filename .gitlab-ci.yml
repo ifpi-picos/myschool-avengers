@@ -1,5 +1,9 @@
 image: node:latest
 
+cache:
+  paths:
+    - node_modules/
+
 before_script:
   - export NODE_ENV=test
 
@@ -11,6 +15,7 @@ variables:
 stages:
   - build
   - test
+  - deploy
 
 cache:
   paths:
@@ -31,4 +36,15 @@ test_with_lab:
   stage: test
   script: 
     - npm test
+
+heroku_deploy:
+  stage: deploy
+  script:
+    - apt update -qq
+    - apt install -qq -y ruby
+    - gem install -q dpl
+    - dpl --provider=heroku --app=$APP_NAME --api-key=$AUTH_TOKEN
+  only:
+    - master
+
     
