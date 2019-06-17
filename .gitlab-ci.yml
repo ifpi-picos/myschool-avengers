@@ -1,16 +1,11 @@
 image: node:latest
 
-cache:
-  paths:
-    - node_modules/
-
 before_script:
   - export NODE_ENV=test
 
 variables:
   DB_HOST: $DB_URL
   DB_PORT: 27017
-
 
 stages:
   - build
@@ -23,7 +18,7 @@ cache:
 
 services:
   - mongo
-  
+
 install_dependencies:
   stage: build
   script:
@@ -31,10 +26,10 @@ install_dependencies:
   artifacts:
     paths:
       - node_modules/
-  
+
 test_with_lab:
   stage: test
-  script: 
+  script:
     - npm test
 
 heroku_deploy:
@@ -46,5 +41,3 @@ heroku_deploy:
     - dpl --provider=heroku --app=$APP_NAME --api-key=$AUTH_TOKEN
   only:
     - master
-
-    
