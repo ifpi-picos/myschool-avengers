@@ -1,12 +1,13 @@
 import mongoose from 'mongoose';
-import Config from './config';
+// import Config from './config';
 
 mongoose.Promise = Promise;
 
-const mongodbUrl = Config.MONGODB_URL;
+// const mongodbUrl = Config.MONGODB_URL;
+const mongodbUrl = process.env.DB_URL;
 const configuracoes = {
   useNewUrlParser: true,
-  useFindAndModify: false,
+  useFindAndModify: false
   // user: 'database_user',
   // pass: 'user_password',
   // auth: {
@@ -16,7 +17,6 @@ const configuracoes = {
 
 const connect = () => mongoose.connect(mongodbUrl, configuracoes);
 
-
 export default {
-  connect,
+  connect
 };

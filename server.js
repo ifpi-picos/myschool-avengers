@@ -1,3 +1,4 @@
+import dotenv from 'dotenv/config';
 import setupApp from './src/app';
 import Config from './src/config/config';
 
