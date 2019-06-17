@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "engines": {
+    "node": "10.16.0"
+  },
   "scripts": {
     "lint": "eslint server.js src test",
     "lint:fix": "eslint server.js src test --fix",
